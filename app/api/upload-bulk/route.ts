@@ -1,4 +1,4 @@
-// app/api/upload/route.ts
+// app/api/upload-bulk/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
             {
               folder: `notas_fiscais/${categoria}`,
               public_id: fileName,
-              resource_type: 'auto', 
+              resource_type: 'auto',
             },
             (error, result) => {
               if (error) {

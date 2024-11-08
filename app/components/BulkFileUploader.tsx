@@ -1,11 +1,11 @@
-// app/components/FileUploader.tsx
+// components/BulkFileUploader.tsx
 
 'use client';
 
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-export default function FileUploader() {
+export default function BulkFileUploader() {
   const [files, setFiles] = useState<File[]>([]);
   const [categoria, setCategoria] = useState('MERCEARIA');
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +32,7 @@ export default function FileUploader() {
     });
     formData.append('categoria', categoria);
 
-    const response = await fetch('/api/upload', {
+    const response = await fetch('/api/upload-bulk', {
       method: 'POST',
       body: formData,
     });
@@ -54,8 +54,8 @@ export default function FileUploader() {
         <input
           type="file"
           accept="application/pdf,image/*"
-          onChange={handleFileChange}
           multiple
+          onChange={handleFileChange}
           className="w-full text-gray-800"
         />
       </div>
@@ -64,7 +64,7 @@ export default function FileUploader() {
         <select
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
-          className="w-full border px-3 py-2 rounded text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full border px-3 py-2 rounded text-gray-800"
         >
           {categorias.map((cat) => (
             <option key={cat} value={cat}>
