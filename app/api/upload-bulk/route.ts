@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import { Readable } from 'stream';
-import fileType from 'file-type';
+import { fileTypeFromBuffer } from 'file-type';
 
 export async function POST(req: NextRequest) {
   const contentType = req.headers.get('content-type') || '';
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         const buffer = Buffer.from(arrayBuffer);
 
         // Detectar o tipo de arquivo
-        const fileInfo = await fileType.fromBuffer(buffer);
+        const fileInfo = await fileTypeFromBuffer(buffer);
         let resourceType: 'image' | 'raw' = 'raw';
 
         if (fileInfo?.mime.startsWith('image/')) {
