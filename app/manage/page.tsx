@@ -49,20 +49,20 @@ export default function ManageNotes() {
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Gerenciamento de Notas</h1>
+      <h1 className="text-2xl font-bold mb-4 text-black">Gerenciamento de Notas</h1>
       <div className="mb-4 flex space-x-4">
         <input
           type="date"
           name="data"
           value={filter.data}
           onChange={handleFilterChange}
-          className="border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
         />
         <select
           name="categoria"
           value={filter.categoria}
           onChange={handleFilterChange}
-          className="border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
         >
           {categorias.map((cat) => (
             <option key={cat} value={cat}>
@@ -83,18 +83,18 @@ export default function ManageNotes() {
             </tr>
           </thead>
           <tbody>
-            {filteredNotes.map((note) => (
-              <tr key={note.id} className="hover:bg-gray-100">
-                <td className="py-2 px-4 border-b text-gray-700">{note.fornecedor}</td>
-                <td className="py-2 px-4 border-b text-gray-700">{note.numeroNota}</td>
-                <td className="py-2 px-4 border-b text-gray-700">{note.categoria}</td>
-                <td className="py-2 px-4 border-b text-gray-700">{note.data}</td>
-                <td className="py-2 px-4 border-b">
-                  <a
-                    href={`/api/download?filePath=${encodeURIComponent(note.filePath)}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Baixar
+          {filteredNotes.map((note) => (
+            <tr key={note.id} className="hover:bg-gray-100">
+              <td className="py-2 px-4 border-b text-gray-700">{note.fornecedor}</td>
+              <td className="py-2 px-4 border-b text-gray-700">{note.numeroNota}</td>
+              <td className="py-2 px-4 border-b text-gray-700">{note.categoria}</td>
+              <td className="py-2 px-4 border-b text-gray-700">{note.data}</td>
+              <td className="py-2 px-4 border-b">
+                <a
+                  href={`/api/download?filePath=${encodeURIComponent(note.filePath)}`}
+                  className="text-blue-500 hover:underline"
+                >
+                  Baixar
                   </a>
                 </td>
               </tr>

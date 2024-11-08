@@ -1,33 +1,49 @@
-// app/api/notes/route.ts
-
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { v2 as cloudinary } from 'cloudinary';
 
-export async function GET() {
-  const dirPath = path.join(process.cwd(), 'app', 'notas_fiscais');
-  const categorias = await fs.readdir(dirPath);
-
-  const notes = [];
-
-  for (const categoria of categorias) {
-    const categoriaPath = path.join(dirPath, categoria);
-    const files = await fs.readdir(categoriaPath);
-
-    for (const file of files) {
-      const [fornecedor, numeroNota, dataCompleta] = file.split('_');
-      const [data] = dataCompleta.split('.');
-
-      notes.push({
-        id: `${categoria}-${file}`,
-        fornecedor,
-        numeroNota,
-        categoria,
-        data,
-        filePath: path.join('/app/notas_fiscais', categoria, file),
-      });
-    }
+interface CloudinaryResource {
+    public_id: string;
+    format: string;
+    created_at: string;
+    secure_url: string;
   }
 
-  return NextResponse.json(notes);
-}
+  export async function GET() {
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+      api_key: process.env.CLOUDINARY_API_KEY!,
+      api_secret: process.env.CLOUDINARY_API_SECRET!,
+    });
+  
+    try {
+      const resources = await cloudinary.api.resources({
+        type: 'upload',
+        prefix: 'notas_fiscais/',
+        max_results: 500,
+      });
+  
+      const notes = resources.resources.map((resource: CloudinaryResource) => {
+        const { public_id, format, created_at, secure_url } = resource;
+  
+        const [_, categoria, fileName] = public_id.split('/');
+        const [fornecedor, numeroNota, dataCompleta] = fileName.split('_');
+        const [dataNota] = dataCompleta.split('.');
+  
+        return {
+          id: public_id,
+          fornecedor,
+          numeroNota,
+          categoria,
+          data: dataNota,
+          filePath: public_id,
+          url: secure_url,
+          format,
+        };
+      });
+  
+      return NextResponse.json(notes);
+    } catch (error) {
+      console.error('Erro ao listar arquivos do Cloudinary:', error);
+      return NextResponse.json({ message: 'Erro ao listar arquivos.' }, { status: 500 });
+    }
+  }
