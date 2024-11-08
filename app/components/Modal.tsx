@@ -1,5 +1,3 @@
-// app/components/Modal.tsx
-
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
@@ -47,8 +45,8 @@ export default function Modal({ imageData, onClose }: ModalProps) {
       <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
 
       <div className="relative bg-black p-6 rounded-lg shadow-lg w-full max-w-md mx-auto">
-        <h2 className="text-xl font-bold mb-4 text-black">Informações da Nota Fiscal</h2>
-        {/* Campos do formulário */}
+        <h2 className="text-xl font-bold mb-4 text-white">Informações da Nota Fiscal</h2>
+
         <div className="mb-4">
           <label className="block mb-1 text-gray-700">Fornecedor</label>
           <input
@@ -64,7 +62,7 @@ export default function Modal({ imageData, onClose }: ModalProps) {
             type="text"
             value={numeroNota}
             onChange={(e) => setNumeroNota(e.target.value)}
-            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
           />
         </div>
         <div className="mb-4">
@@ -72,7 +70,7 @@ export default function Modal({ imageData, onClose }: ModalProps) {
           <select
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
-            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
           >
             {categorias.map((cat) => (
               <option key={cat} value={cat}>

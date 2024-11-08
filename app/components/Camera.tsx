@@ -1,4 +1,3 @@
-// app/components/Camera.tsx
 
 'use client';
 
@@ -9,12 +8,25 @@ export default function Camera() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [imageData, setImageData] = useState<string>('');
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
 
   const startCamera = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    if (videoRef.current) {
-      videoRef.current.srcObject = stream;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode },
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.error('Erro ao acessar a câmera:', error);
+      alert('Não foi possível acessar a câmera. Por favor, verifique as permissões.');
     }
+  };
+
+  const switchCamera = () => {
+    setFacingMode((prevMode) => (prevMode === 'user' ? 'environment' : 'user'));
+    startCamera();
   };
 
   const captureImage = () => {
@@ -28,11 +40,9 @@ export default function Camera() {
       const dataUrl = canvas.toDataURL('image/png');
       setImageData(dataUrl);
 
-      // Parar o stream
       const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
       tracks.forEach((track) => track.stop());
 
-      // Mostrar o modal para inserir informações
       setShowModal(true);
     }
   };
@@ -48,6 +58,12 @@ export default function Camera() {
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
               Iniciar Câmera
+            </button>
+            <button
+              onClick={switchCamera}
+              className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+            >
+              Alternar Câmera
             </button>
             <button
               onClick={captureImage}

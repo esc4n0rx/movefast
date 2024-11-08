@@ -43,7 +43,6 @@ export default function FileUploader() {
   
     if (response.ok) {
       toast.success('Nota fiscal enviada com sucesso!');
-      // Resetar o formulário
       setFile(null);
       setFornecedor('');
       setNumeroNota('');
@@ -69,7 +68,7 @@ export default function FileUploader() {
           type="text"
           value={fornecedor}
           onChange={(e) => setFornecedor(e.target.value)}
-          className="w-full border px-3 py-2 rounded"
+          className="w-full border px-3 py-2 rounded text-black"
         />
       </div>
       <div className="mb-4">
@@ -78,7 +77,7 @@ export default function FileUploader() {
           type="text"
           value={numeroNota}
           onChange={(e) => setNumeroNota(e.target.value)}
-          className="w-full border px-3 py-2 rounded"
+          className="w-full border px-3 py-2 rounded text-black"
         />
       </div>
       <div className="mb-4">
@@ -86,7 +85,7 @@ export default function FileUploader() {
         <select
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
-          className="w-full border px-3 py-2 rounded"
+          className="w-full border px-3 py-2 rounded text-black"
         >
           {categorias.map((cat) => (
             <option key={cat} value={cat}>

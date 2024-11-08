@@ -8,7 +8,6 @@ export async function POST(req: NextRequest) {
   const contentType = req.headers.get('content-type') || '';
 
   if (contentType.includes('application/json')) {
-    // Upload via Scannear (imagem base64)
     const { fornecedor, numeroNota, categoria, imageData } = await req.json();
 
     const dataAtual = new Date().toISOString().split('T')[0];
@@ -24,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: 'Arquivo salvo com sucesso!' });
   } else if (contentType.includes('multipart/form-data')) {
-    // Upload via Enviar Nota (arquivo PDF)
+
     const formData = await req.formData();
     const file = formData.get('file') as Blob;
     const fornecedor = formData.get('fornecedor') as string;
