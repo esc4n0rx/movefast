@@ -3,6 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import { Readable } from 'stream';
+import fileType from 'file-type';
 
 export async function POST(req: NextRequest) {
   const contentType = req.headers.get('content-type') || '';
@@ -30,6 +31,14 @@ export async function POST(req: NextRequest) {
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
+        // Detectar o tipo de arquivo
+        const fileInfo = await fileType.fromBuffer(buffer);
+        let resourceType: 'image' | 'raw' = 'raw';
+
+        if (fileInfo?.mime.startsWith('image/')) {
+          resourceType = 'image';
+        }
+
         const readableStream = new Readable();
         readableStream.push(buffer);
         readableStream.push(null);
@@ -39,7 +48,7 @@ export async function POST(req: NextRequest) {
             {
               folder: `notas_fiscais/${categoria}`,
               public_id: fileName,
-              resource_type: 'auto',
+              resource_type: resourceType,
             },
             (error, result) => {
               if (error) {
